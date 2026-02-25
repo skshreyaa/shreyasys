@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shreya</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #e8e8e8;
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Animated gradient background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(120, 80, 200, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(200, 80, 120, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(80, 200, 180, 0.05) 0%, transparent 50%);
+            animation: gradientShift 15s ease infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Grain texture */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            opacity: 0.5;
+            z-index: 1;
+        }
+
+        /* Custom cursor */
+        body {
+            cursor: none;
+        }
+
+        .cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.15s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 32px;
+            height: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.3s ease;
+            mix-blend-mode: difference;
+        }
+
+        a:hover ~ .cursor-follower,
+        button:hover ~ .cursor-follower {
+            transform: scale(1.5);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 25px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.0);
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px 60px;
+        }
+
+        .logo {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: #fff;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 50px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #fff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero section with creative layout */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 60px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 100px;
+            align-items: center;
+        }
+
+        .hero-text {
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .hero-subtitle::before {
+            content: '// ';
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 40px;
+            color: #fff;
+            letter-spacing: -2px;
+        }
+
+        .text-reveal {
+            display: inline-block;
+            opacity: 0;
+            animation: textReveal 0.8s ease forwards;
+        }
+
+        .text-reveal:nth-child(1) { animation-delay: 0.1s; }
+        .text-reveal:nth-child(2) { animation-delay: 0.2s; }
+        .text-reveal:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes textReveal {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-description {
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.9;
+            font-weight: 300;
+            margin-bottom: 50px;
+            max-width: 500px;
+        }
+
+        /* Creative floating card */
+        .floating-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 50px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .floating-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: slideShine 3s infinite;
+        }
+
+        @keyframes slideShine {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .stat-box {
+            padding: 20px;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            border-left-color: #fff;
+            transform: translateX(10px);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 300;
+            color: #fff;
+            margin-bottom: 5px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* CTA buttons with creative hover */
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            border-color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Sections with creative layouts */
+        .section {
+            min-height: 100vh;
+            padding: 120px 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 80px;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .section-label::before {
+            content: '[ ';
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .section-label::after {
+            content: ' ]';
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(40px, 6vw, 72px);
+            font-weight: 400;
+            color: #fff;
+            letter-spacing: -1px;
+        }
+
+        /* Bento grid layout for work */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-top: 60px;
+        }
+
+        .bento-item {
+            background: #0a0a0a;
+            padding: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .bento-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .bento-item:hover::before {
+            opacity: 1;
+        }
+
+        .bento-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+            transform: translateY(-10px);
+        }
+
+        .bento-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .bento-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .bento-company {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .bento-description {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 300;
+        }
+
+        .bento-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.5px;
+        }
+
+        /* Custom SVG Icons for interests */
+        .interests-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: rgba(255, 255, 255, 0.03);
+            margin-top: 60px;
+        }
+
+        .interest-item {
+            background: #0a0a0a;
+            padding: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interest-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.5), transparent);
+            transition: width 0.5s ease;
+        }
+
+        .interest-item:hover::after {
+            width: 100%;
+        }
+
+        .interest-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+            padding-left: 50px;
+        }
+
+        .interest-name {
+            font-size: 18px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: -0.5px;
+        }
+
+        /* Creative geometric icons */
+        .interest-icon {
+            width: 32px;
+            height: 32px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .interest-item:hover .interest-icon {
+            transform: scale(1.2) rotate(15deg);
+        }
+
+        .interest-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Footer */
+        footer {
+            padding: 100px 60px 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 60px;
+        }
+
+        .footer-brand h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .footer-brand p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.4);
+            line-height: 1.8;
+            max-width: 400px;
+        }
+
+        .footer-section h4 {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+            padding-left: 10px;
+        }
+
+        .footer-bottom {
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Scroll progress bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.8));
+            z-index: 10001;
+            transition: width 0.1s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .floating-card {
+                margin-top: 40px;
+            }
+
+            .interests-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 968px) {
+            nav {
+                padding: 20px 30px;
+            }
+
+            .nav-links {
+                gap: 25px;
+            }
+
+            .section {
+                padding: 100px 30px;
+            }
+
+            .hero {
+                padding-top: 100px;
+            }
+
+            .hero-content {
+                padding: 0 30px;
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 48px;
+            }
+
+            h2 {
+                font-size: 40px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cursor,
+            .cursor-follower {
+                display: none;
+            }
+
+            body {
+                cursor: auto;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Selection */
+        ::selection {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress"></div>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <nav id="navbar">
+        <div class="logo">Shreya</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#interests">Interests</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <p class="hero-subtitle">Developer & Creative Explorer</p>
+                    <h1>
+                        <span class="text-reveal">Building</span><br>
+                        <span class="text-reveal">meaningful</span><br>
+                        <span class="text-reveal">experiences</span>
+                    </h1>
+                    <p class="hero-description">
+                        Third-year CS student at The Apollo University, crafting software solutions 
+                        at the intersection of code, creativity, and culture. Exploring AI/ML, web dev, 
+                        and everything in between.
+                    </p>
+                    <div class="cta-buttons">
+                        <a href="#work" class="btn">View Work</a>
+                        <a href="#contact" class="btn">Get in Touch</a>
+                    </div>
+                </div>
+
+                <div class="floating-card">
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-number">9.96</div>
+                            <div class="stat-label">CGPA</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">3+</div>
+                            <div class="stat-label">Internships</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">5+</div>
+                            <div class="stat-label">Projects</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">1st</div>
+                            <div class="stat-label">IdeaTAUn '25</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work -->
+    <section class="section" id="work">
+        <div class="section-content">
+            <div class="section-header">
+                <p class="section-label">Selected Work</p>
+                <h2>Experience & Projects</h2>
+            </div>
+
+            <div class="bento-grid">
+                <div class="bento-item">
+                    <div class="bento-number">01</div>
+                    <h3 class="bento-title">Compliance Management System</h3>
+                    <p class="bento-company">Apollo Hospitals SDC</p>
+                    <p class="bento-description">
+                        Built MERN-stack system reducing manual effort by 70%. Implemented RBAC, 
+                        task scheduling, and compliance dashboards improving audit readiness by 50%.
+                    </p>
+                    <div class="bento-tags">
+                        <span class="tag">React</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">RBAC</span>
+                    </div>
+                </div>
+
+                <div class="bento-item">
+                    <div class="bento-number">02</div>
+                    <h3 class="bento-title">Web Applications</h3>
+                    <p class="bento-company">Technolot LLP</p>
+                    <p class="bento-description">
+                        Developed responsive applications with React.js and Node.js. Automated deployment 
+                        with Firebase CI/CD, reducing release cycle time by 40%.
+                    </p>
+                    <div class="bento-tags">
+                        <span class="tag">React</span>
+                        <span class="tag">Firebase</span>
+                        <span class="tag">CI/CD</span>
+                        <span class="tag">Agile</span>
+                    </div>
+                </div>
+
+                <div class="bento-item">
+                    <div class="bento-number">03</div>
+                    <h3 class="bento-title">ML Recommendation Engine</h3>
+                    <p class="bento-company">DATEX</p>
+                    <p class="bento-description">
+                        Designed recommendation engine with 22% accuracy improvement. Built fake news 
+                        classifier using NLP and Random Forest on 5,000+ articles.
+                    </p>
+                    <div class="bento-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">TensorFlow</span>
+                        <span class="tag">NLP</span>
+                        <span class="tag">ML</span>
+                    </div>
+                </div>
+
+                <div class="bento-item">
+                    <div class="bento-number">04</div>
+                    <h3 class="bento-title">PHealth Vault</h3>
+                    <p class="bento-company">🏆 IdeaTAUn 2025 Winner</p>
+                    <p class="bento-description">
+                        Award-winning health data management solution. 1st place among 30 teams 
+                        with privacy-first architecture and user-friendly interface.
+                    </p>
+                    <div class="bento-tags">
+                        <span class="tag">Full-Stack</span>
+                        <span class="tag">Security</span>
+                        <span class="tag">Healthcare</span>
+                    </div>
+                </div>
+
+                <div class="bento-item">
+                    <div class="bento-number">05</div>
+                    <h3 class="bento-title">Incident Response System</h3>
+                    <p class="bento-company">Security Project</p>
+                    <p class="bento-description">
+                        Automated incident response agent integrated with SIEM tools. Reduced 
+                        security response time by 40% through automated threat mitigation.
+                    </p>
+                    <div class="bento-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">SIEM</span>
+                        <span class="tag">Security</span>
+                    </div>
+                </div>
+
+                <div class="bento-item">
+                    <div class="bento-number">06</div>
+                    <h3 class="bento-title">Climate Risk Monitor</h3>
+                    <p class="bento-company">Viksit Bharat - Top 30</p>
+                    <p class="bento-description">
+                        AI-powered climate monitoring with IoT sensors for ISRO × IIT-TNif. 
+                        Predictive analytics for disaster preparedness and early warnings.
+                    </p>
+                    <div class="bento-tags">
+                        <span class="tag">AI</span>
+                        <span class="tag">IoT</span>
+                        <span class="tag">Analytics</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interests -->
+    <section class="section" id="interests">
+        <div class="section-content">
+            <div class="section-header">
+                <p class="section-label">Interests</p>
+                <h2>Beyond the code</h2>
+            </div>
+
+            <div class="interests-grid">
+                <div class="interest-item">
+                    <span class="interest-name">Art History</span>
+                    <div class="interest-icon">
+                        <svg viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5">
+                            <rect x="6" y="6" width="20" height="20" />
+                            <path d="M6 12 L26 12 M12 6 L12 26 M20 6 L20 26 M6 20 L26 20" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="interest-item">
+                    <span class="interest-name">Computer Science</span>
+                    <div class="interest-icon">
+                        <svg viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5">
+                            <circle cx="16" cy="8" r="3" />
+                            <circle cx="8" cy="24" r="3" />
+                            <circle cx="24" cy="24" r="3" />
+                            <path d="M16 11 L16 18 M16 18 L8 21 M16 18 L24 21" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="interest-item">
+                    <span class="interest-name">Sci-Fi</span>
+                    <div class="interest-icon">
+                        <svg viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5">
+                            <polygon points="16,6 8,26 24,26" />
+                            <path d="M12 18 L20 18 M14 22 L18 22" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="interest-item">
+                    <span class="interest-name">Game Development</span>
+                    <div class="interest-icon">
+                        <svg viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5">
+                            <rect x="6" y="10" width="20" height="12" rx="3" />
+                            <circle cx="11" cy="16" r="2" />
+                            <path d="M19 14 L19 18 M17 16 L21 16" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="interest-item">
+                    <span class="interest-name">Mythology</span>
+                    <div class="interest-icon">
+                        <svg viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5">
+                            <path d="M16 6 L12 16 L6 16 L10 22 L8 28 L16 24 L24 28 L22 22 L26 16 L20 16 Z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="interest-item">
+                    <span class="interest-name">Pixel Art</span>
+                    <div class="interest-icon">
+                        <svg viewBox="0 0 32 32" fill="rgba(255,255,255,0.6)">
+                            <rect x="8" y="8" width="4" height="4" />
+                            <rect x="12" y="8" width="4" height="4" />
+                            <rect x="16" y="8" width="4" height="4" />
+                            <rect x="20" y="8" width="4" height="4" />
+                            <rect x="8" y="12" width="4" height="4" />
+                            <rect x="20" y="12" width="4" height="4" />
+                            <rect x="8" y="20" width="4" height="4" />
+                            <rect x="12" y="20" width="4" height="4" />
+                            <rect x="16" y="20" width="4" height="4" />
+                            <rect x="20" y="20" width="4" height="4" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="interest-item">
+                    <span class="interest-name">Minimalism</span>
+                    <div class="interest-icon">
+                        <svg viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5">
+                            <circle cx="16" cy="16" r="8" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="interest-item">
+                    <span class="interest-name">Indian Maximalism</span>
+                    <div class="interest-icon">
+                        <svg viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1">
+                            <circle cx="16" cy="16" r="4" />
+                            <circle cx="16" cy="16" r="8" />
+                            <circle cx="16" cy="16" r="12" />
+                            <path d="M16 4 L16 28 M4 16 L28 16 M8 8 L24 24 M24 8 L8 24" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="interest-item">
+                    <span class="interest-name">Food Culture</span>
+                    <div class="interest-icon">
+                        <svg viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5">
+                            <circle cx="16" cy="18" r="8" />
+                            <path d="M10 10 Q16 14 22 10" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="interest-item">
+                    <span class="interest-name">Retro Web</span>
+                    <div class="interest-icon">
+                        <svg viewBox="0 0 32 32" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5">
+                            <rect x="6" y="8" width="20" height="16" rx="2" />
+                            <path d="M6 12 L26 12" />
+                            <circle cx="10" cy="10" r="0.8" fill="rgba(255,255,255,0.6)" />
+                            <circle cx="13" cy="10" r="0.8" fill="rgba(255,255,255,0.6)" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>Let's create something together</h3>
+                <p>
+                    Currently exploring new opportunities in web development, AI/ML, and creative tech. 
+                    Always open to interesting conversations and collaborations.
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="mailto:skshreyaaa@gmail.com">Email</a></li>
+                    <li><a href="https://linkedin.com/in/skshreyaaa">LinkedIn</a></li>
+                    <li><a href="https://github.com/skshreyaa">GitHub</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Navigate</h4>
+                <ul class="footer-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#work">Work</a></li>
+                    <li><a href="#interests">Interests</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 Shreya. Designed & Developed with care.</p>
+            <p>Based in Chittoor, India</p>
+        </div>
+    </footer>
+
+    <script>
+        // Custom cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursorFollower.style.left = e.clientX - 16 + 'px';
+                cursorFollower.style.top = e.clientY - 16 + 'px';
+            }, 100);
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll progress bar
+        const scrollProgress = document.querySelector('.scroll-progress');
+        window.addEventListener('scroll', () => {
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrolled = (window.scrollY / scrollHeight) * 100;
+            scrollProgress.style.width = scrolled + '%';
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const navHeight = navbar.offsetHeight;
+                    const targetPosition = target.offsetTop - navHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Magnetic effect for bento items
+        const bentoItems = document.querySelectorAll('.bento-item');
+        bentoItems.forEach(item => {
+            item.addEventListener('mousemove', (e) => {
+                const rect = item.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const deltaX = (x - centerX) / centerX;
+                const deltaY = (y - centerY) / centerY;
+                
+                item.style.transform = `translateY(-10px) rotateX(${deltaY * 5}deg) rotateY(${deltaX * 5}deg)`;
+            });
+
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
